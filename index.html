@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HackNet Security — Explorer. Apprendre. Protéger.</title>
+<meta name="description" content="HackNet Security — Maîtriser le monde informatique et numérique digital sans limites."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{
+--black:#000305;
+--dark:#050c14;
+--dark2:#0a1628;
+--dark3:#0d1f35;
+--blue:#0066ff;
+--blue2:#0044cc;
+--blue3:#003399;
+--cyan:#00c8ff;
+--cyan2:#00a8e8;
+--white:#f0f6ff;
+--white2:#c8d8f0;
+--gray:#4a6080;
+--border:#0d2845;
+--font-head:'Orbitron',monospace;
+--font-sub:'Rajdhani',sans-serif;
+--font-body:'Poppins',sans-serif;
+--font-ui:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);overflow-x:hidden;}
+
+/* ─── SCANLINE OVERLAY ─── */
+body::before{
+content:'';position:fixed;inset:0;
+background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,100,255,.015) 2px,rgba(0,100,255,.015) 4px);
+pointer-events:none;z-index:9999;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--dark);}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px;}
+
+/* ─── NAV ─── */
+nav{
+position:fixed;top:0;left:0;right:0;z-index:1000;
+background:rgba(0,3,5,.85);backdrop-filter:blur(20px);
+border-bottom:1px solid var(--border);
+display:flex;align-items:center;justify-content:space-between;
+padding:0 2.5rem;height:64px;
+}
+.nav-logo{display:flex;align-items:center;gap:.75rem;text-decoration:none;}
+.nav-logo-icon{
+width:38px;height:38px;border-radius:6px;
+background:linear-gradient(135deg,var(--blue),var(--cyan));
+display:flex;align-items:center;justify-content:center;
+font-family:var(--font-head);font-size:.85rem;font-weight:900;color:#fff;
+position:relative;overflow:hidden;
+}
+.nav-logo-icon::after{
+content:'';position:absolute;inset:0;
+background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.15));
+}
+.nav-brand{font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--white);letter-spacing:.05em;}
+.nav-brand span{color:var(--cyan);}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-links a{
+font-family:var(--font-sub);font-size:.95rem;font-weight:500;
+color:var(--white2);text-decoration:none;letter-spacing:.08em;
+text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:2px;
+}
+.nav-links a::after{
+content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+background:var(--cyan);transition:width .3s;
+}
+.nav-links a:hover{color:var(--cyan);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+background:var(--blue);color:#fff;padding:.45rem 1.2rem;border-radius:4px;
+font-family:var(--font-sub);font-weight:600;font-size:.9rem;letter-spacing:.06em;
+text-decoration:none;text-transform:uppercase;transition:background .2s,transform .2s;border:1px solid var(--blue);
+}
+.nav-cta:hover{background:var(--cyan);color:var(--black);border-color:var(--cyan);transform:translateY(-1px);}
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.nav-toggle span{display:block;width:24px;height:2px;background:var(--white2);border-radius:1px;transition:.3s;}
+
+/* ─── HERO ─── */
+#accueil{
+min-height:100vh;display:flex;align-items:center;justify-content:center;
+background:var(--black);position:relative;overflow:hidden;padding-top:64px;
+}
+.hero-grid{
+position:absolute;inset:0;
+background-image:
+linear-gradient(rgba(0,102,255,.06) 1px,transparent 1px),
+linear-gradient(90deg,rgba(0,102,255,.06) 1px,transparent 1px);
+background-size:60px 60px;
+}
+.hero-glow{
+position:absolute;top:20%;left:50%;transform:translate(-50%,-50%);
+width:600px;height:600px;border-radius:50%;
+background:radial-gradient(circle,rgba(0,102,255,.12) 0%,transparent 70%);
+pointer-events:none;
+}
+.hero-glow2{
+position:absolute;bottom:10%;right:10%;
+width:300px;height:300px;border-radius:50%;
+background:radial-gradient(circle,rgba(0,200,255,.08) 0%,transparent 70%);
+pointer-events:none;
+}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px;padding:2rem;}
+.hero-badge{
+display:inline-flex;align-items:center;gap:.5rem;
+border:1px solid rgba(0,200,255,.3);border-radius:2px;
+padding:.35rem 1rem;margin-bottom:2rem;
+font-family:var(--font-sub);font-size:.8rem;font-weight:600;
+color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;
+background:rgba(0,200,255,.05);
+}
+.hero-badge::before{
+content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);
+animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-avatar-wrap{
+width:120px;height:120px;margin:0 auto 2rem;position:relative;cursor:pointer;
+}
+.hero-avatar{
+width:120px;height:120px;border-radius:50%;object-fit:cover;
+border:3px solid var(--blue);display:block;background:var(--dark3);
+overflow:hidden;position:relative;
+}
+.hero-avatar-placeholder{
+width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+font-family:var(--font-head);font-size:2rem;color:var(--cyan);
+background:linear-gradient(135deg,var(--dark2),var(--dark3));
+}
+.hero-avatar-ring{
+position:absolute;inset:-6px;border-radius:50%;
+border:2px solid transparent;
+background:linear-gradient(var(--black),var(--black)) padding-box,
+linear-gradient(135deg,var(--blue),var(--cyan),var(--blue)) border-box;
+animation:spin 4s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hero-avatar-edit{
+position:absolute;bottom:4px;right:4px;
+width:28px;height:28px;border-radius:50%;background:var(--blue);
+display:flex;align-items:center;justify-content:center;
+font-size:.7rem;color:#fff;border:2px solid var(--black);
+opacity:0;transition:opacity .2s;
+}
+.hero-avatar-wrap:hover .hero-avatar-edit{opacity:1;}
+#avatar-input{display:none;}
+.hero-title{
+font-family:var(--font-head);font-size:clamp(2rem,5vw,3.8rem);font-weight:900;
+line-height:1.1;letter-spacing:.03em;margin-bottom:1rem;
+}
+.hero-title .line1{color:var(--white);}
+.hero-title .line2{
+background:linear-gradient(90deg,var(--blue),var(--cyan));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-slogan{
+font-family:var(--font-sub);font-size:1.2rem;font-weight:500;
+color:var(--cyan);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;
+}
+.hero-slogan2{
+font-family:var(--font-body);font-size:1rem;color:var(--white2);
+margin-bottom:2.5rem;line-height:1.6;max-width:600px;margin-left:auto;margin-right:auto;
+}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:3rem;}
+.btn-primary{
+display:inline-flex;align-items:center;gap:.5rem;
+background:var(--blue);color:#fff;padding:.75rem 2rem;border-radius:4px;
+font-family:var(--font-sub);font-weight:600;font-size:1rem;letter-spacing:.08em;
+text-decoration:none;text-transform:uppercase;transition:.25s;border:1px solid var(--blue);
+}
+.btn-primary:hover{background:var(--cyan);color:var(--black);border-color:var(--cyan);transform:translateY(-2px);}
+.btn-outline{
+display:inline-flex;align-items:center;gap:.5rem;
+background:transparent;color:var(--white2);padding:.75rem 2rem;border-radius:4px;
+font-family:var(--font-sub);font-weight:600;font-size:1rem;letter-spacing:.08em;
+text-decoration:none;text-transform:uppercase;transition:.25s;border:1px solid var(--border);
+}
+.btn-outline:hover{border-color:var(--blue);color:var(--cyan);transform:translateY(-2px);}
+.hero-stats{
+display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap;
+border-top:1px solid var(--border);padding-top:2rem;
+}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-family:var(--font-head);font-size:1.6rem;font-weight:700;color:var(--cyan);}
+.hero-stat-label{font-family:var(--font-sub);font-size:.75rem;color:var(--gray);letter-spacing:.1em;text-transform:uppercase;margin-top:.2rem;}
+
+/* ─── SECTIONS ─── */
+section{padding:6rem 0;}
+.container{max-width:1200px;margin:0 auto;padding:0 2rem;}
+.section-tag{
+display:inline-flex;align-items:center;gap:.5rem;
+font-family:var(--font-sub);font-size:.75rem;font-weight:600;
+color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem;
+}
+.section-tag::before{content:'';width:20px;height:1px;background:var(--cyan);}
+.section-title{
+font-family:var(--font-head);font-size:clamp(1.6rem,3vw,2.5rem);font-weight:700;
+color:var(--white);line-height:1.2;margin-bottom:1rem;
+}
+.section-title span{
+background:linear-gradient(90deg,var(--blue),var(--cyan));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.section-sub{font-size:1rem;color:var(--white2);line-height:1.7;max-width:600px;}
+
+/* ─── ABOUT ─── */
+#a-propos{background:var(--dark);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:3rem;}
+.about-text p{color:var(--white2);line-height:1.8;font-size:.95rem;margin-bottom:1.2rem;}
+.about-highlight{
+border-left:3px solid var(--cyan);padding:.75rem 1.25rem;
+background:rgba(0,200,255,.05);border-radius:0 4px 4px 0;margin:1.5rem 0;
+font-family:var(--font-sub);font-size:1.05rem;color:var(--cyan);font-weight:500;
+}
+.about-cards{display:flex;flex-direction:column;gap:1rem;}
+.about-card{
+background:var(--dark2);border:1px solid var(--border);border-radius:6px;
+padding:1.25rem 1.5rem;transition:border-color .25s,transform .25s;
+}
+.about-card:hover{border-color:var(--blue);transform:translateX(4px);}
+.about-card-icon{font-size:1.4rem;color:var(--cyan);margin-bottom:.6rem;}
+.about-card-title{font-family:var(--font-sub);font-size:1rem;font-weight:600;color:var(--white);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
+.about-card-text{font-size:.85rem;color:var(--gray);line-height:1.6;}
+.skills-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;}
+.skill-tag{
+font-family:var(--font-sub);font-size:.8rem;font-weight:600;
+padding:.3rem .8rem;border-radius:3px;text-transform:uppercase;letter-spacing:.06em;
+border:1px solid var(--blue);color:var(--cyan);background:rgba(0,102,255,.08);
+transition:.2s;cursor:default;
+}
+.skill-tag:hover{background:rgba(0,200,255,.15);border-color:var(--cyan);}
+
+/* ─── SERVICES ─── */
+#services{background:var(--black);}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:3rem;}
+.service-card{
+background:var(--dark);border:1px solid var(--border);border-radius:8px;
+padding:2rem;position:relative;overflow:hidden;transition:.3s;
+}
+.service-card::before{
+content:'';position:absolute;top:0;left:0;right:0;height:3px;
+background:linear-gradient(90deg,var(--blue),var(--cyan));
+transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.service-card:hover{border-color:var(--blue);transform:translateY(-4px);}
+.service-card:hover::before{transform:scaleX(1);}
+.service-icon{
+width:50px;height:50px;border-radius:8px;
+background:linear-gradient(135deg,rgba(0,102,255,.2),rgba(0,200,255,.1));
+border:1px solid rgba(0,102,255,.3);
+display:flex;align-items:center;justify-content:center;
+font-size:1.4rem;color:var(--cyan);margin-bottom:1.25rem;
+}
+.service-title{font-family:var(--font-sub);font-size:1.1rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem;}
+.service-desc{font-size:.88rem;color:var(--gray);line-height:1.7;margin-bottom:1.25rem;}
+.service-price{
+display:inline-block;font-family:var(--font-head);font-size:.8rem;font-weight:600;
+color:var(--cyan);background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.2);
+padding:.3rem .8rem;border-radius:3px;letter-spacing:.06em;
+}
+.service-badge-new{
+position:absolute;top:1rem;right:1rem;
+font-family:var(--font-sub);font-size:.7rem;font-weight:600;
+background:var(--blue);color:#fff;padding:.2rem .6rem;border-radius:3px;
+text-transform:uppercase;letter-spacing:.06em;
+}
+
+/* ─── BLOG ─── */
+#blog{background:var(--dark);}
+.blog-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;}
+.blog-tab{
+font-family:var(--font-sub);font-size:.85rem;font-weight:600;
+padding:.4rem 1rem;border-radius:3px;border:1px solid var(--border);
+color:var(--gray);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:.06em;
+background:transparent;
+}
+.blog-tab.active,.blog-tab:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;}
+.blog-card{
+background:var(--dark2);border:1px solid var(--border);border-radius:8px;
+overflow:hidden;transition:.3s;cursor:pointer;
+}
+.blog-card:hover{border-color:var(--blue);transform:translateY(-4px);}
+.blog-card-thumb{
+height:180px;background:linear-gradient(135deg,var(--dark3),var(--dark2));
+display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.blog-card-thumb-icon{font-size:3rem;color:rgba(0,102,255,.4);}
+.blog-card-cat{
+position:absolute;top:.75rem;left:.75rem;
+font-family:var(--font-sub);font-size:.7rem;font-weight:600;
+padding:.2rem .6rem;border-radius:2px;text-transform:uppercase;letter-spacing:.06em;
+}
+.cat-cyber{background:rgba(255,50,50,.15);color:#ff6060;border:1px solid rgba(255,50,50,.3);}
+.cat-dev{background:rgba(0,102,255,.15);color:#6090ff;border:1px solid rgba(0,102,255,.3);}
+.cat-data{background:rgba(0,200,100,.15);color:#00c870;border:1px solid rgba(0,200,100,.3);}
+.cat-ai{background:rgba(180,0,255,.15);color:#c060ff;border:1px solid rgba(180,0,255,.3);}
+.cat-linux{background:rgba(255,160,0,.15);color:#ffa030;border:1px solid rgba(255,160,0,.3);}
+.cat-reseau{background:rgba(0,200,255,.15);color:var(--cyan);border:1px solid rgba(0,200,255,.3);}
+.blog-card-body{padding:1.25rem;}
+.blog-card-meta{
+display:flex;align-items:center;gap:.75rem;
+font-size:.75rem;color:var(--gray);margin-bottom:.6rem;font-family:var(--font-ui);
+}
+.blog-card-title{font-family:var(--font-sub);font-size:1rem;font-weight:600;color:var(--white);line-height:1.4;margin-bottom:.5rem;}
+.blog-card-excerpt{font-size:.82rem;color:var(--gray);line-height:1.6;}
+.blog-card-footer{
+display:flex;align-items:center;justify-content:space-between;
+padding:.75rem 1.25rem;border-top:1px solid var(--border);
+font-size:.8rem;color:var(--gray);
+}
+.blog-read-more{color:var(--cyan);text-decoration:none;font-family:var(--font-sub);font-weight:600;font-size:.8rem;letter-spacing:.06em;}
+.blog-read-more:hover{color:var(--white);}
+.blog-publish-btn{
+display:inline-flex;align-items:center;gap:.5rem;margin-top:2rem;
+background:transparent;border:1px solid var(--blue);color:var(--cyan);
+padding:.6rem 1.5rem;border-radius:4px;font-family:var(--font-sub);font-weight:600;
+font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.2s;
+}
+.blog-publish-btn:hover{background:var(--blue);color:#fff;}
+
+/* ─── PUBLISH MODAL ─── */
+.modal-overlay{
+display:none;position:fixed;inset:0;z-index:2000;
+background:rgba(0,3,5,.92);backdrop-filter:blur(8px);
+align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+background:var(--dark2);border:1px solid var(--border);border-radius:10px;
+width:min(700px,95vw);max-height:90vh;overflow-y:auto;padding:2rem;
+}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.modal-title{font-family:var(--font-head);font-size:1.1rem;color:var(--white);}
+.modal-close{background:none;border:none;color:var(--gray);font-size:1.4rem;cursor:pointer;line-height:1;}
+.modal-close:hover{color:var(--white);}
+.form-group{margin-bottom:1.25rem;}
+.form-label{display:block;font-family:var(--font-sub);font-size:.85rem;font-weight:600;color:var(--white2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem;}
+.form-input,.form-select,.form-textarea{
+width:100%;background:var(--dark);border:1px solid var(--border);border-radius:4px;
+color:var(--white);padding:.65rem 1rem;font-family:var(--font-body);font-size:.9rem;outline:none;
+transition:border-color .2s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--blue);}
+.form-textarea{min-height:140px;resize:vertical;}
+.form-select option{background:var(--dark2);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-submit{
+width:100%;background:var(--blue);color:#fff;border:none;border-radius:4px;
+padding:.8rem;font-family:var(--font-sub);font-weight:700;font-size:1rem;
+letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:.2s;margin-top:.5rem;
+}
+.form-submit:hover{background:var(--cyan);color:var(--black);}
+
+/* ─── SOCIAL / RÉSEAUX ─── */
+#reseaux{background:var(--black);}
+.social-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:3rem;}
+.social-card{
+background:var(--dark);border:1px solid var(--border);border-radius:8px;
+padding:1.5rem;text-align:center;text-decoration:none;transition:.3s;
+display:flex;flex-direction:column;align-items:center;gap:.75rem;
+}
+.social-card:hover{transform:translateY(-6px);}
+.social-card-icon{
+width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+font-size:1.4rem;margin:0 auto;border:2px solid;transition:.3s;
+}
+.social-card-name{font-family:var(--font-sub);font-size:.9rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.social-card-handle{font-size:.78rem;color:var(--gray);}
+.sc-linkedin .social-card-icon{background:rgba(0,119,181,.15);color:#0077b5;border-color:rgba(0,119,181,.4);}
+.sc-linkedin:hover{border-color:#0077b5;} .sc-linkedin .social-card-name{color:#0077b5;}
+.sc-tiktok .social-card-icon{background:rgba(255,0,80,.1);color:#ff0050;border-color:rgba(255,0,80,.3);}
+.sc-tiktok:hover{border-color:#ff0050;} .sc-tiktok .social-card-name{color:#ff0050;}
+.sc-instagram .social-card-icon{background:rgba(225,48,108,.1);color:#e1306c;border-color:rgba(225,48,108,.3);}
+.sc-instagram:hover{border-color:#e1306c;} .sc-instagram .social-card-name{color:#e1306c;}
+.sc-telegram .social-card-icon{background:rgba(0,136,204,.1);color:#0088cc;border-color:rgba(0,136,204,.3);}
+.sc-telegram:hover{border-color:#0088cc;} .sc-telegram .social-card-name{color:#0088cc;}
+.sc-facebook .social-card-icon{background:rgba(24,119,242,.1);color:#1877f2;border-color:rgba(24,119,242,.3);}
+.sc-facebook:hover{border-color:#1877f2;} .sc-facebook .social-card-name{color:#1877f2;}
+.sc-whatsapp .social-card-icon{background:rgba(37,211,102,.1);color:#25d366;border-color:rgba(37,211,102,.3);}
+.sc-whatsapp:hover{border-color:#25d366;} .sc-whatsapp .social-card-name{color:#25d366;}
+.sc-email .social-card-icon{background:rgba(0,200,255,.1);color:var(--cyan);border-color:rgba(0,200,255,.3);}
+.sc-email:hover{border-color:var(--cyan);} .sc-email .social-card-name{color:var(--cyan);}
+
+/* ─── SHOP ─── */
+#shop{background:var(--dark);}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:3rem;}
+.shop-card{
+background:var(--dark2);border:1px solid var(--border);border-radius:8px;
+overflow:hidden;transition:.3s;
+}
+.shop-card:hover{border-color:var(--blue);transform:translateY(-4px);}
+.shop-card-thumb{
+height:160px;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,var(--dark3) 0%,var(--dark2) 100%);
+font-size:2.5rem;color:rgba(0,102,255,.4);position:relative;
+}
+.shop-badge{
+position:absolute;top:.75rem;right:.75rem;
+font-family:var(--font-sub);font-size:.7rem;font-weight:600;
+padding:.2rem .6rem;border-radius:2px;text-transform:uppercase;letter-spacing:.06em;
+}
+.badge-hot{background:rgba(255,80,0,.2);color:#ff6030;border:1px solid rgba(255,80,0,.4);}
+.badge-new{background:rgba(0,200,255,.15);color:var(--cyan);border:1px solid rgba(0,200,255,.4);}
+.badge-pro{background:rgba(0,102,255,.2);color:#6090ff;border:1px solid rgba(0,102,255,.4);}
+.shop-card-body{padding:1.25rem;}
+.shop-card-type{font-family:var(--font-sub);font-size:.72rem;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;}
+.shop-card-title{font-family:var(--font-sub);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.shop-card-desc{font-size:.82rem;color:var(--gray);line-height:1.5;margin-bottom:1rem;}
+.shop-card-footer{display:flex;align-items:center;justify-content:space-between;}
+.shop-price{font-family:var(--font-head);font-size:1rem;color:var(--cyan);}
+.shop-btn{
+font-family:var(--font-sub);font-size:.8rem;font-weight:600;
+background:var(--blue);color:#fff;border:none;border-radius:3px;
+padding:.4rem 1rem;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:.2s;
+}
+.shop-btn:hover{background:var(--cyan);color:var(--black);}
+
+/* ─── CONTACT ─── */
+#contact{background:var(--black);}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;margin-top:3rem;align-items:start;}
+.contact-info{display:flex;flex-direction:column;gap:1.5rem;}
+.contact-info-item{
+display:flex;align-items:center;gap:1rem;
+background:var(--dark);border:1px solid var(--border);border-radius:6px;
+padding:1rem 1.25rem;text-decoration:none;transition:.25s;
+}
+.contact-info-item:hover{border-color:var(--blue);}
+.contact-info-icon{
+width:40px;height:40px;min-width:40px;border-radius:6px;
+background:rgba(0,102,255,.15);border:1px solid rgba(0,102,255,.3);
+display:flex;align-items:center;justify-content:center;
+font-size:1rem;color:var(--cyan);
+}
+.contact-info-label{font-family:var(--font-sub);font-size:.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:.1em;}
+.contact-info-value{font-size:.9rem;color:var(--white2);font-weight:500;}
+.contact-form-card{
+background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:2rem;
+}
+
+/* ─── LANG SELECTOR ─── */
+.lang-selector{
+display:flex;gap:.4rem;align-items:center;
+}
+.lang-btn{
+font-family:var(--font-sub);font-size:.72rem;font-weight:600;
+padding:.25rem .55rem;border-radius:3px;border:1px solid var(--border);
+color:var(--gray);cursor:pointer;background:none;letter-spacing:.06em;transition:.2s;
+}
+.lang-btn.active,.lang-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* ─── FOOTER ─── */
+footer{
+background:var(--dark);border-top:1px solid var(--border);
+padding:3rem 0 2rem;
+}
+.footer-inner{display:flex;flex-direction:column;gap:2rem;}
+.footer-top{display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:start;}
+.footer-brand{max-width:300px;}
+.footer-logo{font-family:var(--font-head);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.footer-logo span{color:var(--cyan);}
+.footer-desc{font-size:.85rem;color:var(--gray);line-height:1.7;}
+.footer-links-col h4{font-family:var(--font-sub);font-size:.8rem;font-weight:600;color:var(--white);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.75rem;}
+.footer-links-col a{display:block;font-size:.85rem;color:var(--gray);text-decoration:none;margin-bottom:.4rem;transition:color .2s;}
+.footer-links-col a:hover{color:var(--cyan);}
+.footer-bottom{
+border-top:1px solid var(--border);padding-top:1.5rem;
+display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;
+font-size:.8rem;color:var(--gray);
+}
+.footer-bottom a{color:var(--gray);text-decoration:none;}
+.footer-bottom a:hover{color:var(--cyan);}
+
+/* ─── BACK TO TOP ─── */
+#back-top{
+position:fixed;bottom:2rem;right:2rem;z-index:500;
+width:42px;height:42px;border-radius:4px;background:var(--blue);
+display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem;
+cursor:pointer;opacity:0;pointer-events:none;transition:.3s;border:none;
+}
+#back-top.show{opacity:1;pointer-events:auto;}
+#back-top:hover{background:var(--cyan);color:var(--black);}
+
+/* ─── MOBILE ─── */
+@media(max-width:900px){
+.about-grid,.contact-grid{grid-template-columns:1fr;}
+.form-row{grid-template-columns:1fr;}
+}
+@media(max-width:700px){
+.nav-links,.lang-selector{display:none;}
+.nav-toggle{display:flex;}
+nav.open .nav-links{
+display:flex;flex-direction:column;
+position:absolute;top:64px;left:0;right:0;
+background:rgba(0,3,5,.97);padding:1.5rem 2rem;gap:1rem;
+border-bottom:1px solid var(--border);
+}
+nav.open .lang-selector{
+display:flex;position:absolute;top:calc(64px + 250px);left:2rem;
+}
+.hero-title{font-size:2rem;}
+.hero-stats{gap:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="navbar">
+  <a href="#accueil" class="nav-logo">
+    <div class="nav-logo-icon">HN</div>
+    <span class="nav-brand">HackNet <span>Security</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#accueil">Accueil</a>
+    <a href="#a-propos">À Propos</a>
+    <a href="#services">Services</a>
+    <a href="#blog">Blog</a>
+    <a href="#shop">Shop</a>
+    <a href="#reseaux">Réseaux</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <div class="lang-selector">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    </div>
+    <a href="#contact" class="nav-cta">Contact</a>
+    <div class="nav-toggle" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="accueil">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span>HackNet Security — Opérationnel</span>
+    </div>
+    <div class="hero-avatar-wrap" onclick="document.getElementById('avatar-input').click()" title="Changer la photo de profil">
+      <div class="hero-avatar">
+        <div class="hero-avatar-placeholder" id="avatar-display">HN</div>
+      </div>
+      <div class="hero-avatar-ring"></div>
+      <div class="hero-avatar-edit"><i class="fas fa-camera"></i></div>
+    </div>
+    <input type="file" id="avatar-input" accept="image/*" onchange="changeAvatar(event)"/>
+    <h1 class="hero-title">
+      <div class="line1">Explorer. Apprendre.</div>
+      <div class="line2">Protéger.</div>
+    </h1>
+    <p class="hero-slogan">Hack. Learn. Sécure.</p>
+    <p class="hero-slogan2">
+      Bienvenue dans l'univers HackNet Security.<br/>
+      Maîtriser le monde informatique et numérique digital sans limites.
+    </p>
+    <div class="hero-actions">
+      <a href="#blog" class="btn-primary"><i class="fas fa-rss"></i> Explorer le Blog</a>
+      <a href="#services" class="btn-outline"><i class="fas fa-shield-alt"></i> Nos Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">7+</div>
+        <div class="hero-stat-label">Domaines</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Passion</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">🌍</div>
+        <div class="hero-stat-label">Afrique & Monde</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">∞</div>
+        <div class="hero-stat-label">Apprentissage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── À PROPOS ─── -->
+<section id="a-propos">
+  <div class="container">
+    <div class="section-tag">À Propos</div>
+    <h2 class="section-title">Qui sommes-nous ?</h2>
+    <p class="section-sub">Une identité forte, une mission réelle, une dimension professionnelle.</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>HackNet Security est une plateforme dédiée à la maîtrise du monde informatique et numérique. Notre ambition est de rendre la cybersécurité, le développement et les technologies digitales accessibles à tous — débutants, amateurs et professionnels.</p>
+        <div class="about-highlight">
+          Mission : Permettre à chacun de maîtriser le monde informatique, numérique et digital, sans limites.
+        </div>
+        <p>Notre vision est de promouvoir la connaissance informatique auprès des nouvelles générations et de pousser la recherche technologique sur le continent africain. Nous croyons que l'Afrique a un rôle central à jouer dans l'avenir numérique mondial.</p>
+        <p>À travers des articles, tutoriels, formations et services professionnels, HackNet Security accompagne les entreprises et particuliers vers une maîtrise complète des outils numériques.</p>
+        <div class="skills-list">
+          <span class="skill-tag"><i class="fas fa-shield-alt" style="margin-right:.3rem"></i>Cybersécurité</span>
+          <span class="skill-tag"><i class="fas fa-code" style="margin-right:.3rem"></i>Dev Web</span>
+          <span class="skill-tag"><i class="fas fa-mobile-alt" style="margin-right:.3rem"></i>Dev Mobile</span>
+          <span class="skill-tag"><i class="fas fa-database" style="margin-right:.3rem"></i>Data Science</span>
+          <span class="skill-tag"><i class="fab fa-linux" style="margin-right:.3rem"></i>Linux</span>
+          <span class="skill-tag"><i class="fas fa-network-wired" style="margin-right:.3rem"></i>Réseaux</span>
+          <span class="skill-tag"><i class="fas fa-brain" style="margin-right:.3rem"></i>IA</span>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="about-card">
+          <div class="about-card-icon"><i class="fas fa-bullseye"></i></div>
+          <div class="about-card-title">Mission</div>
+          <div class="about-card-text">Explorer, apprendre et protéger. Rendre le savoir informatique accessible à tous, sans frontières.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><i class="fas fa-eye"></i></div>
+          <div class="about-card-title">Vision</div>
+          <div class="about-card-text">Promouvoir la culture numérique en Afrique et dans le monde. Inspirer la prochaine génération de professionnels tech.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><i class="fas fa-rocket"></i></div>
+          <div class="about-card-title">Objectifs</div>
+          <div class="about-card-text">Créer une entreprise informatique de référence, proposer des services aux entreprises et former la communauté.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><i class="fas fa-globe-africa"></i></div>
+          <div class="about-card-title">Impact Afrique</div>
+          <div class="about-card-text">Développer la recherche informatique sur le continent et connecter les talents africains au marché mondial.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section id="services">
+  <div class="container">
+    <div class="section-tag">Services</div>
+    <h2 class="section-title">Ce que nous <span>proposons</span></h2>
+    <p class="section-sub">Des solutions professionnelles pour entreprises, startups et particuliers.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-badge-new">Populaire</span>
+        <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="service-title">Audit de Sécurité</div>
+        <div class="service-desc">Analyse complète de vos systèmes, identification des vulnérabilités, rapport détaillé et recommandations de renforcement.</div>
+        <span class="service-price">Sur devis</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
+        <div class="service-title">Développement Web</div>
+        <div class="service-desc">Création de sites vitrine, applications web, e-commerce et plateformes SaaS avec les technologies modernes.</div>
+        <span class="service-price">À partir de 150 000 FCFA</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+        <div class="service-title">Développement Mobile</div>
+        <div class="service-desc">Applications iOS et Android natives ou cross-platform (React Native, Flutter) pour votre business.</div>
+        <span class="service-price">Sur devis</span>
+      </div>
+      <div class="service-card">
+        <span class="service-badge-new">Nouveau</span>
+        <div class="service-icon"><i class="fas fa-brain"></i></div>
+        <div class="service-title">Solutions IA</div>
+        <div class="service-desc">Intégration d'intelligence artificielle, automatisation de processus, chatbots et analyse de données.</div>
+        <span class="service-price">À partir de 80 000 FCFA</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="service-title">Formations</div>
+        <div class="service-desc">Formations en ligne et présentiel : cybersécurité, développement web, data science, Linux et réseaux informatiques.</div>
+        <span class="service-price">À partir de 20 000 FCFA</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
+        <div class="service-title">Direction Artistique</div>
+        <div class="service-desc">Identité visuelle, branding, marketing digital et stratégie de communication pour votre marque ou entreprise.</div>
+        <span class="service-price">Sur devis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BLOG ─── -->
+<section id="blog">
+  <div class="container">
+    <div class="section-tag">Blog & Actualités</div>
+    <h2 class="section-title">Contenu & <span>Publications</span></h2>
+    <p class="section-sub">Articles, news, astuces, tutoriels et annonces dans le monde de l'informatique.</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2rem;margin-bottom:.5rem;">
+      <div class="blog-tabs" id="blog-tabs">
+        <button class="blog-tab active" data-cat="all">Tout</button>
+        <button class="blog-tab" data-cat="cyber">Cybersécurité</button>
+        <button class="blog-tab" data-cat="dev">Dev Web/Mobile</button>
+        <button class="blog-tab" data-cat="data">Data Science</button>
+        <button class="blog-tab" data-cat="ai">IA</button>
+        <button class="blog-tab" data-cat="linux">Linux</button>
+        <button class="blog-tab" data-cat="reseau">Réseaux</button>
+      </div>
+      <button class="blog-publish-btn" onclick="openModal()"><i class="fas fa-plus"></i> Publier un article</button>
+    </div>
+    <div class="blog-grid" id="blog-grid">
+      <!-- posts injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ─── PUBLISH MODAL ─── -->
+<div class="modal-overlay" id="publish-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fas fa-edit" style="color:var(--cyan);margin-right:.5rem"></i>Nouvelle Publication</span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Titre de l'article</label>
+      <input class="form-input" id="post-title" placeholder="Ex: Les 10 meilleures pratiques en cybersécurité..."/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Catégorie</label>
+        <select class="form-select" id="post-cat">
+          <option value="cyber">Cybersécurité</option>
+          <option value="dev">Dev Web/Mobile</option>
+          <option value="data">Data Science</option>
+          <option value="ai">Intelligence Artificielle</option>
+          <option value="linux">Linux</option>
+          <option value="reseau">Réseaux</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <select class="form-select" id="post-type">
+          <option>Article</option>
+          <option>News</option>
+          <option>Astuce</option>
+          <option>Tutoriel</option>
+          <option>Annonce</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Extrait / Résumé</label>
+      <textarea class="form-textarea" id="post-excerpt" placeholder="Décrivez brièvement le contenu de votre article..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Temps de lecture estimé</label>
+      <input class="form-input" id="post-read" placeholder="Ex: 5 min"/>
+    </div>
+    <button class="form-submit" onclick="publishPost()"><i class="fas fa-paper-plane" style="margin-right:.5rem"></i>Publier</button>
+  </div>
+</div>
+
+<!-- ─── SHOP ─── -->
+<section id="shop">
+  <div class="container">
+    <div class="section-tag">Boutique</div>
+    <h2 class="section-title">Produits & <span>Formations</span></h2>
+    <p class="section-sub">Formations, ressources premium, services informatiques et solutions digitales pour votre croissance.</p>
+    <div class="shop-grid">
+      <div class="shop-card">
+        <div class="shop-card-thumb">
+          <i class="fas fa-shield-alt"></i>
+          <span class="shop-badge badge-hot">🔥 Hot</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-type">Formation · Cybersécurité</div>
+          <div class="shop-card-title">Initiation à la Cybersécurité</div>
+          <div class="shop-card-desc">De zéro aux fondamentaux : hacking éthique, protection des systèmes, outils essentiels.</div>
+          <div class="shop-card-footer">
+            <span class="shop-price">25 000 FCFA</span>
+            <button class="shop-btn" onclick="alert('Commande en cours de déploiement. Contactez-nous !')">Commander</button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-card-thumb">
+          <i class="fas fa-laptop-code"></i>
+          <span class="shop-badge badge-new">Nouveau</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-type">Formation · Dev Web</div>
+          <div class="shop-card-title">Développement Web Full Stack</div>
+          <div class="shop-card-desc">HTML, CSS, JavaScript, React, Node.js et bases de données. Du front au back.</div>
+          <div class="shop-card-footer">
+            <span class="shop-price">35 000 FCFA</span>
+            <button class="shop-btn" onclick="alert('Commande en cours de déploiement. Contactez-nous !')">Commander</button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-card-thumb">
+          <i class="fas fa-brain"></i>
+          <span class="shop-badge badge-pro">Pro</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-type">Formation · IA & Data Science</div>
+          <div class="shop-card-title">Intelligence Artificielle Pratique</div>
+          <div class="shop-card-desc">Python, Machine Learning, Deep Learning, projets réels. Niveau débutant à avancé.</div>
+          <div class="shop-card-footer">
+            <span class="shop-price">45 000 FCFA</span>
+            <button class="shop-btn" onclick="alert('Commande en cours de déploiement. Contactez-nous !')">Commander</button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-card-thumb">
+          <i class="fab fa-linux"></i>
+          <span class="shop-badge badge-new">Nouveau</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-type">Formation · Linux</div>
+          <div class="shop-card-title">Linux Maîtrise Complète</div>
+          <div class="shop-card-desc">Terminal, administration système, scripts Bash, sécurisation serveurs Linux.</div>
+          <div class="shop-card-footer">
+            <span class="shop-price">20 000 FCFA</span>
+            <button class="shop-btn" onclick="alert('Commande en cours de déploiement. Contactez-nous !')">Commander</button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-card-thumb">
+          <i class="fas fa-globe"></i>
+          <span class="shop-badge badge-pro">Pro</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-type">Service · Site Web</div>
+          <div class="shop-card-title">Création Site Web Pro</div>
+          <div class="shop-card-desc">Site vitrine ou e-commerce moderne, responsive, optimisé SEO et livré en 7 jours.</div>
+          <div class="shop-card-footer">
+            <span class="shop-price">À partir 150K</span>
+            <button class="shop-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Demander</button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-card-thumb">
+          <i class="fas fa-users"></i>
+          <span class="shop-badge badge-hot">🔥 Hot</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-type">Communauté · Premium</div>
+          <div class="shop-card-title">Accès Communauté HackNet</div>
+          <div class="shop-card-desc">Rejoignez la communauté privée : ressources exclusives, mentorat, projets collaboratifs.</div>
+          <div class="shop-card-footer">
+            <span class="shop-price">5 000 FCFA/mois</span>
+            <button class="shop-btn" onclick="alert('Commande en cours de déploiement. Contactez-nous !')">Rejoindre</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── RÉSEAUX ─── -->
+<section id="reseaux">
+  <div class="container">
+    <div class="section-tag">Réseaux Sociaux</div>
+    <h2 class="section-title">Rejoignez la <span>communauté</span></h2>
+    <p class="section-sub">Suivez HackNet Security sur toutes les plateformes pour ne rien manquer.</p>
+    <div class="social-grid">
+      <a href="https://www.linkedin.com/in/hacknet-security-031881409" target="_blank" class="social-card sc-linkedin">
+        <div class="social-card-icon"><i class="fab fa-linkedin-in"></i></div>
+        <div class="social-card-name">LinkedIn</div>
+        <div class="social-card-handle">HackNet Security</div>
+      </a>
+      <a href="https://www.tiktok.com/@hacknetsecurity" target="_blank" class="social-card sc-tiktok">
+        <div class="social-card-icon"><i class="fab fa-tiktok"></i></div>
+        <div class="social-card-name">TikTok</div>
+        <div class="social-card-handle">@hacknetsecurity</div>
+      </a>
+      <a href="https://www.instagram.com/hacknetsecuriry" target="_blank" class="social-card sc-instagram">
+        <div class="social-card-icon"><i class="fab fa-instagram"></i></div>
+        <div class="social-card-name">Instagram</div>
+        <div class="social-card-handle">@hacknetsecuriry</div>
+      </a>
+      <a href="https://t.me/HackNetSecurity" target="_blank" class="social-card sc-telegram">
+        <div class="social-card-icon"><i class="fab fa-telegram-plane"></i></div>
+        <div class="social-card-name">Telegram</div>
+        <div class="social-card-handle">@HackNetSecurity</div>
+      </a>
+      <a href="https://www.facebook.com/share/18y1QpduSJ/" target="_blank" class="social-card sc-facebook">
+        <div class="social-card-icon"><i class="fab fa-facebook-f"></i></div>
+        <div class="social-card-name">Facebook</div>
+        <div class="social-card-handle">HackNet Security</div>
+      </a>
+      <a href="https://wa.me/2250554891800" target="_blank" class="social-card sc-whatsapp">
+        <div class="social-card-icon"><i class="fab fa-whatsapp"></i></div>
+        <div class="social-card-name">WhatsApp</div>
+        <div class="social-card-handle">+225 05 54 89 18 00</div>
+      </a>
+      <a href="mailto:hacknetsecurity@gmail.com" class="social-card sc-email">
+        <div class="social-card-icon"><i class="fas fa-envelope"></i></div>
+        <div class="social-card-name">E-mail</div>
+        <div class="social-card-handle">hacknetsecurity@gmail.com</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="container">
+    <div class="section-tag">Contact</div>
+    <h2 class="section-title">Travaillons <span>ensemble</span></h2>
+    <p class="section-sub">Un projet ? Une question ? Une collaboration ? Contactez-nous directement.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <a href="mailto:hacknetsecurity@gmail.com" class="contact-info-item">
+          <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <div class="contact-info-label">Email</div>
+            <div class="contact-info-value">hacknetsecurity@gmail.com</div>
+          </div>
+        </a>
+        <a href="https://wa.me/2250554891800" target="_blank" class="contact-info-item">
+          <div class="contact-info-icon"><i class="fab fa-whatsapp"></i></div>
+          <div>
+            <div class="contact-info-label">WhatsApp</div>
+            <div class="contact-info-value">+225 05 54 89 18 00</div>
+          </div>
+        </a>
+        <a href="https://t.me/HackNetSecurity" target="_blank" class="contact-info-item">
+          <div class="contact-info-icon"><i class="fab fa-telegram-plane"></i></div>
+          <div>
+            <div class="contact-info-label">Telegram</div>
+            <div class="contact-info-value">@HackNetSecurity</div>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/hacknet-security-031881409" target="_blank" class="contact-info-item">
+          <div class="contact-info-icon"><i class="fab fa-linkedin-in"></i></div>
+          <div>
+            <div class="contact-info-label">LinkedIn</div>
+            <div class="contact-info-value">HackNet Security</div>
+          </div>
+        </a>
+        <div class="contact-info-item" style="cursor:default;">
+          <div class="contact-info-icon"><i class="fas fa-globe-africa"></i></div>
+          <div>
+            <div class="contact-info-label">Localisation</div>
+            <div class="contact-info-value">Côte d'Ivoire — Afrique & Monde</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-card">
+        <div class="form-group">
+          <label class="form-label">Nom complet</label>
+          <input class="form-input" id="c-name" placeholder="Votre nom"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" id="c-email" type="email" placeholder="votre@email.com"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sujet</label>
+            <select class="form-select" id="c-subject">
+              <option>Service / Devis</option>
+              <option>Formation</option>
+              <option>Collaboration</option>
+              <option>Question générale</option>
+              <option>Autre</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" id="c-message" placeholder="Décrivez votre projet ou votre demande..."></textarea>
+        </div>
+        <button class="form-submit" onclick="sendContact()"><i class="fas fa-paper-plane" style="margin-right:.5rem"></i>Envoyer le message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">HackNet <span>Security</span></div>
+          <p class="footer-desc">Explorer. Apprendre. Protéger.<br/>Maîtriser le monde informatique et numérique digital sans limites.</p>
+        </div>
+        <div class="footer-links-col">
+          <h4>Navigation</h4>
+          <a href="#accueil">Accueil</a>
+          <a href="#a-propos">À Propos</a>
+          <a href="#services">Services</a>
+          <a href="#blog">Blog</a>
+          <a href="#shop">Boutique</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-links-col">
+          <h4>Domaines</h4>
+          <a href="#blog">Cybersécurité</a>
+          <a href="#blog">Développement Web</a>
+          <a href="#blog">Développement Mobile</a>
+          <a href="#blog">Data Science</a>
+          <a href="#blog">Linux</a>
+          <a href="#blog">Intelligence Artificielle</a>
+        </div>
+        <div class="footer-links-col">
+          <h4>Réseaux</h4>
+          <a href="https://www.linkedin.com/in/hacknet-security-031881409" target="_blank">LinkedIn</a>
+          <a href="https://www.tiktok.com/@hacknetsecurity" target="_blank">TikTok</a>
+          <a href="https://www.instagram.com/hacknetsecuriry" target="_blank">Instagram</a>
+          <a href="https://t.me/HackNetSecurity" target="_blank">Telegram</a>
+          <a href="https://www.facebook.com/share/18y1QpduSJ/" target="_blank">Facebook</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 HackNet Security. Tous droits réservés.</span>
+        <span>Hack. Learn. Sécure. — <span style="color:var(--cyan)">Explorer. Apprendre. Protéger.</span></span>
+        <a href="mailto:hacknetsecurity@gmail.com">hacknetsecurity@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+// ─── BLOG DATA ───
+const ICONS = {cyber:'fas fa-shield-alt',dev:'fas fa-code',data:'fas fa-chart-bar',ai:'fas fa-brain',linux:'fab fa-linux',reseau:'fas fa-network-wired'};
+const CATS = {cyber:'Cybersécurité',dev:'Dev Web/Mobile',data:'Data Science',ai:'IA',linux:'Linux',reseau:'Réseaux'};
+let posts = [
+  {id:1,title:"Top 10 des outils de cybersécurité en 2025",cat:"cyber",type:"Article",excerpt:"Découvrez les outils indispensables pour tout professionnel de la sécurité informatique cette année.",date:"12 Mai 2025",read:"6 min"},
+  {id:2,title:"React 19 : Ce qui change pour les développeurs",cat:"dev",type:"News",excerpt:"Les nouvelles fonctionnalités de React 19 et leur impact sur le développement web moderne.",date:"10 Mai 2025",read:"4 min"},
+  {id:3,title:"Introduction au Machine Learning avec Python",cat:"data",type:"Tutoriel",excerpt:"Un guide complet pour débuter en Machine Learning : concepts clés, bibliothèques et premier projet pratique.",date:"08 Mai 2025",read:"10 min"},
+  {id:4,title:"Linux : Les commandes essentielles à connaître",cat:"linux",type:"Astuce",excerpt:"Maîtrisez le terminal Linux avec ces commandes fondamentales que tout administrateur doit connaître.",date:"05 Mai 2025",read:"5 min"},
+  {id:5,title:"ChatGPT-5 : Révolution ou évolution ?",cat:"ai",type:"News",excerpt:"Analyse des nouvelles capacités de GPT-5 et ce que cela signifie pour l'avenir de l'IA.",date:"03 Mai 2025",read:"7 min"},
+  {id:6,title:"Réseaux : Comprendre TCP/IP en profondeur",cat:"reseau",type:"Tutoriel",excerpt:"Plongez dans les protocoles TCP/IP, la base de toute communication réseau moderne.",date:"01 Mai 2025",read:"8 min"},
+];
+let activeCat = 'all';
+
+function catClass(c){return 'cat-'+c;}
+function renderPosts(){
+  const filtered = activeCat==='all'?posts:posts.filter(p=>p.cat===activeCat);
+  const grid = document.getElementById('blog-grid');
+  grid.innerHTML = filtered.length ? filtered.map(p=>`
+    <div class="blog-card">
+      <div class="blog-card-thumb">
+        <i class="${ICONS[p.cat]||'fas fa-file'} blog-card-thumb-icon"></i>
+        <span class="blog-card-cat ${catClass(p.cat)}">${p.type}</span>
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-card-meta">
+          <span><i class="fas fa-calendar-alt"></i> ${p.date}</span>
+          <span><i class="fas fa-clock"></i> ${p.read}</span>
+          <span class="blog-card-cat ${catClass(p.cat)}">${CATS[p.cat]}</span>
+        </div>
+        <div class="blog-card-title">${p.title}</div>
+        <div class="blog-card-excerpt">${p.excerpt}</div>
+      </div>
+      <div class="blog-card-footer">
+        <span style="font-size:.8rem;color:var(--gray)"><i class="fas fa-user"></i> HackNet Security</span>
+        <a href="#" class="blog-read-more">Lire →</a>
+      </div>
+    </div>
+  `).join('') : '<p style="color:var(--gray);grid-column:1/-1">Aucun article dans cette catégorie pour l\'instant.</p>';
+}
+renderPosts();
+document.getElementById('blog-tabs').addEventListener('click',e=>{
+  const btn = e.target.closest('.blog-tab');
+  if(!btn)return;
+  document.querySelectorAll('.blog-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+  renderPosts();
+});
+
+// ─── MODAL ───
+function openModal(){document.getElementById('publish-modal').classList.add('open');}
+function closeModal(){document.getElementById('publish-modal').classList.remove('open');}
+document.getElementById('publish-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+function publishPost(){
+  const t=document.getElementById('post-title').value.trim();
+  const c=document.getElementById('post-cat').value;
+  const ty=document.getElementById('post-type').value;
+  const ex=document.getElementById('post-excerpt').value.trim()||'Nouvel article publié sur HackNet Security.';
+  const r=document.getElementById('post-read').value||'3 min';
+  if(!t){alert('Veuillez entrer un titre.');return;}
+  const today=new Date();
+  const dateStr=today.getDate()+' '+'Jan Fév Mar Avr Mai Jun Jul Aoû Sep Oct Nov Déc'.split(' ')[today.getMonth()]+' '+today.getFullYear();
+  posts.unshift({id:Date.now(),title:t,cat:c,type:ty,excerpt:ex,date:dateStr,read:r});
+  closeModal();
+  activeCat='all';
+  document.querySelectorAll('.blog-tab').forEach((b,i)=>{b.classList.toggle('active',i===0);});
+  renderPosts();
+  document.getElementById('post-title').value='';
+  document.getElementById('post-excerpt').value='';
+  document.getElementById('post-read').value='';
+}
+
+// ─── AVATAR ───
+function changeAvatar(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const d=document.getElementById('avatar-display');
+    d.innerHTML='';
+    d.style.background='none';
+    const img=document.createElement('img');
+    img.src=ev.target.result;
+    img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:50%;';
+    d.appendChild(img);
+  };
+  r.readAsDataURL(file);
+}
+
+// ─── CONTACT ───
+function sendContact(){
+  const n=document.getElementById('c-name').value.trim();
+  const e=document.getElementById('c-email').value.trim();
+  const m=document.getElementById('c-message').value.trim();
+  if(!n||!e||!m){alert('Veuillez remplir tous les champs.');return;}
+  const s=document.getElementById('c-subject').value;
+  window.location.href=`mailto:hacknetsecurity@gmail.com?subject=[HackNet] ${s} — ${n}&body=De: ${n}%0AEmail: ${e}%0A%0A${m}`;
+}
+
+// ─── BACK TO TOP ───
+window.addEventListener('scroll',()=>{
+  document.getElementById('back-top').classList.toggle('show',window.scrollY>400);
+});
+
+// ─── NAV MOBILE ───
+function toggleNav(){document.getElementById('navbar').classList.toggle('open');}
+
+// ─── LANG (demo) ───
+function setLang(l){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  if(l!=='fr') alert('Version '+l.toUpperCase()+' en cours de développement. Restez connecté !');
+}
+
+// ─── NAV ACTIVE ON SCROLL ───
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)cur=s.id;});
+  navLinks.forEach(a=>{
+    a.style.color=a.getAttribute('href')==='#'+cur?'var(--cyan)':'';
+  });
+},{passive:true});
+</script>
+</body>
+</html>
